@@ -143,7 +143,7 @@
                                         :colLength="showSelect ? filteredHeader.length + 1 : filteredHeader.length" />
                                         <!-- data-aos="fade-zoom-in" data-aos-easing="ease-in-back" :data-aos-delay="ii * 25" data-aos-offset="0" -->
                                     <tr v-if="!isLoading && from_count > 0" v-for="(item, ii) in formattedData" :key="item.id" :id="'col-' + item.id" 
-                                        :class="[hasRowClick ? 'hover:cursor-pointer hover:bg-slate-100' : '', 'border-b border-lightgray dark:border-gray-600 dark:hover:bg-slate-700']"
+                                        :class="[hasRowClick ? 'hover:cursor-pointer hover:bg-slate-100' : '', 'border-b border-lightgray dark:border-gray-600 dark:hover:bg-slate-200']"
                                         @click="hasRowClick ? tableRowClick(item) : ''">
                                         <td v-if="(item.hasOwnProperty('id') && showSelect == true) || item.hasOwnProperty('employee_id')"
                                             class="pl-2 text-center">
