@@ -30,6 +30,7 @@ const tableHeaders = reactive([
    { title: 'FIRST BILL PERIOD', onSet: true, sortable: true, query: 'first_bill_period', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
    { title: 'ACCOUNT NUMBER', onSet: true, sortable: true, query: 'account_number', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
    { title: 'TURN-OVER DATE', onSet: true, sortable: true, query: 'turned_over_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
+   { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
 ]);
 
 const searchTerm = ref('')
