@@ -1,6 +1,6 @@
 <template>
     <div class="h-full px-4">
-        <Table :url="'/api/accounts'" :headers="tableHeaders" :key="tableKey" :searchKey="searchTerm" :hasThousandRecords="true">
+        <Table :url="'/api/accounts?month='+month+'&year='+year" :headers="tableHeaders" :key="tableKey" :searchKey="searchTerm" :hasThousandRecords="true">
             <template #customButtons>
                 <DropdownButton :buttons="buttonsOR"></DropdownButton>
                 <v-select  class="text-sm w-96 font-thin v-select-style" :options="project_sites" @option:selected="filterProjectSite"  label="title" placeholder="Project Site"></v-select>
@@ -30,10 +30,20 @@ const tableHeaders = reactive([
    { title: 'FIRST BILL PERIOD', onSet: true, sortable: true, query: 'first_bill_period', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
    { title: 'ACCOUNT NUMBER', onSet: true, sortable: true, query: 'account_number', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
    { title: 'TURN-OVER DATE', onSet: true, sortable: true, query: 'turned_over_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
+   { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'ASSOCIATION DUES(PFTM)', onSet: true, sortable: true, query: 'pftm_assoc_dues', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'INSURANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_insurance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'PREVENTIVE MAINTENANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_maintenance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'REAL PROPERTY TAX(PFTM)', onSet: true, sortable: true, query: 'pftm_tax', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'UTILITY(PFTM)', onSet: true, sortable: true, query: 'pftm_utility', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'OTHER INCOME(PFTM)', onSet: true, sortable: true, query: 'pftm_others', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'BLDG IMPROVEMENT(PFTM)', onSet: true, sortable: true, query: 'pftm_bldg', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'VIOLATIONS(PFTM)', onSet: true, sortable: true, query: 'pftm_violations', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
 ]);
 
 const searchTerm = ref('')
+const month = ref(new Date(0, new Date().getMonth()).toLocaleString('default', { month: 'long' }))
+const year = ref(new Date().getFullYear())
 const project_sites = ref([])
 const tableKey = ref(0)
 
@@ -50,10 +60,12 @@ function filterProjectSite(search){
     searchTerm.value = search.id
 }
 function filterPerMonth(search){
-    searchTerm.value = search.title+'-'+selectedYear.value.id
+    month.value = search.title
+    tableKey.value++;
 }
 function filterPerYear(search){
-    searchTerm.value = selectedMonth.value.title+'-'+search.id
+    year.value = search.title
+    tableKey.value++;
 }
 
 async function fetchProjectSites(){

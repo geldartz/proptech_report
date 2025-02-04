@@ -122,7 +122,7 @@
                                         <th v-for="(th, index) in filteredHeader" :key="th" 
                                             v-show="th.title != 'APPROVERS' && !th.hide"
                                             
-                                            :class="[th.freeze ? 'dark:bg-darkmode-600 bg-bluer ':''  ,'py-2.5  text-sm dark:text-darkmode-555  font-normal ',isAttendanceReport ? '' : 'whitespace-nowrap uppercase', th.title == 'ACTIONS' || th.title == 'ID' ? 'w-32' : (th.columnWidth ?? 'w-44 min-w-44')]"
+                                            :class="[th.freeze ? 'dark:bg-darkmode-600 bg-bluer ':''  ,'py-2.5  text-xs dark:text-darkmode-555  font-normal ',isAttendanceReport ? '' : 'whitespace-nowrap uppercase', th.title == 'ACTIONS' || th.title == 'ID' ? 'w-32' : (th.columnWidth ?? 'w-44 min-w-44')]"
                                             :style="th.freeze ? { left: getLeftPosition(index) + 'px', position: 'sticky', zIndex: 10,  } : {}" :ref="'header-' + index">
                                             <div 
                                                 :class="['flex px-2 gap-2', 'justify-'+th.textAlign , { 'justify-center': th.title == 'ACTIONS' }, { 'ml-5': index == 0 }]">
@@ -164,7 +164,7 @@
                                             <template v-else >
 
                                                 <span v-if="!column.hasInlineEdit"
-                                                    class="dark:text-darkmode-444 text-sm">
+                                                    class="dark:text-darkmode-444 text-xs">
                                                     {{ item[column.query] }}
                                                 </span>
 
