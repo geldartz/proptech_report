@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\LotInventories;
 use App\Models\InvoiceCreditPayments;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 class AccountsController extends BaseController
 {
 
@@ -17,12 +18,18 @@ class AccountsController extends BaseController
         $sort_by = $request->get('sort_by');
         $sort_column = $request->get('sort_query');
         $date_column = $request->get('date_column');
-        $start_date = $request->get('start_date');
-        $to_date = $request->get('to_date');
         $search_term = $request->get('search_term');
         $columns = $request->get('columns');
-        $start_date = '2024-12-01';
-        $to_date = '2024-12-31';
+
+        $monthName = $request->get('month');
+        $year = $request->get('year');
+
+        $monthNumeric = date('m', strtotime($monthName));
+
+
+        $date = Carbon::create($year, $monthNumeric);
+        $start_date = $date->startOfMonth()->format('Y-m-d');
+        $to_date = $date->endOfMonth()->format('Y-m-d');
 
         $model = LotInventories::query()
             ->join('report_main.user_lot_inventories as uli', 'lot_inventories.id', '=', 'uli.lot_inventory_id')
@@ -31,20 +38,22 @@ class AccountsController extends BaseController
                 $join->on('p.account_number', '=', 'icp.account_number');
             })
             ->leftJoin('report_main.users as u', 'uli.user_id', '=', 'u.id')
+            ->leftJoin('report_billing.invoices as inv', 'icp.invoice_id', '=', 'inv.id')
             ->whereBetween('p.or_receipt_date', [$start_date, $to_date])
+            ->whereBetween('inv.bill_date', [$start_date, $to_date])
             ->where('p.status', 'VERIFIED')
             ->groupBy(
-                'lot_inventories.id',
-                'lot_inventories.project_site_id',
+                // 'lot_inventories.id',
+                // 'lot_inventories.project_site_id',
                 'uli.account_number',
-                'lot_inventories.name',
-                'lot_inventories.lot_area',
-                'lot_inventories.floor_area',
-                'lot_inventories.first_bill_period',
-                'lot_inventories.turned_over_date',
+                // 'lot_inventories.name',
+                // 'lot_inventories.lot_area',
+                // 'lot_inventories.floor_area',
+                // 'lot_inventories.first_bill_period',
+                // 'lot_inventories.turned_over_date',
                 'p.or_receipt_date',
-                'u.first_name',
-                'u.last_name'
+                // 'u.first_name',
+                // 'u.last_name'
             )
             ->select([
                 'lot_inventories.id',
@@ -66,6 +75,7 @@ class AccountsController extends BaseController
                 DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Special Assessments - STP System Upgrade', 'Electricity') OR icp.type LIKE 'Other Income%' THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_others"),
                 DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Penalty on Building Improvement', 'Special Assessments - Bldg Improvement') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_bldg"),
                 DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type = 'Violations' THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_violations"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date BETWEEN '2025-01-01' AND '2025-01-31' THEN inv.amount_paid ELSE 0 END), 0), 2) AS arrears"),
             ]);
     
         $model->when($date_column, function ($query) use ($date_column, $start_date, $to_date) {

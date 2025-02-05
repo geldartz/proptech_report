@@ -23,22 +23,23 @@
 
 const tableHeaders = reactive([
     
-   { title: 'PROJECT NAME', onSet: true, sortable: true, query: 'name', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'CUSTOMER NAME', onSet: true, sortable: true, query: 'customer_name', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'LOT AREA', onSet: true, sortable: true, query: 'lot_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'FLOOR AREA', onSet: true, sortable: true, query: 'floor_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'FIRST BILL PERIOD', onSet: true, sortable: true, query: 'first_bill_period', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'ACCOUNT NUMBER', onSet: true, sortable: true, query: 'account_number', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'TURN-OVER DATE', onSet: true, sortable: true, query: 'turned_over_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left' },
-   { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'ASSOCIATION DUES(PFTM)', onSet: true, sortable: true, query: 'pftm_assoc_dues', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'INSURANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_insurance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'PREVENTIVE MAINTENANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_maintenance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'REAL PROPERTY TAX(PFTM)', onSet: true, sortable: true, query: 'pftm_tax', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'UTILITY(PFTM)', onSet: true, sortable: true, query: 'pftm_utility', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'OTHER INCOME(PFTM)', onSet: true, sortable: true, query: 'pftm_others', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'BLDG IMPROVEMENT(PFTM)', onSet: true, sortable: true, query: 'pftm_bldg', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
-   { title: 'VIOLATIONS(PFTM)', onSet: true, sortable: true, query: 'pftm_violations', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'left', columnWidth: 'w-60' },
+   { title: 'PROJECT NAME', onSet: true, sortable: true, query: 'name', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'CUSTOMER NAME', onSet: true, sortable: true, query: 'customer_name', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'LOT AREA', onSet: true, sortable: true, query: 'lot_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'FLOOR AREA', onSet: true, sortable: true, query: 'floor_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'FIRST BILL PERIOD', onSet: true, sortable: true, query: 'first_bill_period', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'ACCOUNT NUMBER', onSet: true, sortable: true, query: 'account_number', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'TURN-OVER DATE', onSet: true, sortable: true, query: 'turned_over_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'ASSOCIATION DUES(PFTM)', onSet: true, sortable: true, query: 'pftm_assoc_dues', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'INSURANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_insurance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'PREVENTIVE MAINTENANCE(PFTM)', onSet: true, sortable: true, query: 'pftm_maintenance', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'REAL PROPERTY TAX(PFTM)', onSet: true, sortable: true, query: 'pftm_tax', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'UTILITY(PFTM)', onSet: true, sortable: true, query: 'pftm_utility', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'OTHER INCOME(PFTM)', onSet: true, sortable: true, query: 'pftm_others', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'BLDG IMPROVEMENT(PFTM)', onSet: true, sortable: true, query: 'pftm_bldg', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'VIOLATIONS(PFTM)', onSet: true, sortable: true, query: 'pftm_violations', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
+   { title: 'ARREARS(HOA)', onSet: true, sortable: true, query: 'arrears', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-cyan-700' },
 ]);
 
 const searchTerm = ref('')
@@ -98,6 +99,9 @@ onMounted(() => {
 
     const currentYear = new Date().getFullYear();
     selectedYear.value = years.value.find((year) => year.id === currentYear);
+
+    const currentMonth = new Date().getMonth() + 1;
+    selectedMonth.value = months.value.find((month) => month.id === currentMonth);
 })
 
 </script>

@@ -113,19 +113,21 @@
                     <div class="border-b dark:border-gray-600 rounded-t-lg overflow-hidden">
                         <div class="w-full max-h-[700px] overflow-auto  min-h-[450px] bg-white">
                             <table class="w-full table-fixed overflow-auto " id="dynamic-table">
+                                
                                 <thead class="bg-blue-800 dark:bg-darkmode-600 text-white  sticky top-0 z-10">
                                     <tr>
                                         <th v-show="showSelect" scope="col" class="py-2.5 pl-2 text-sm w-10">
                                             <input type="checkbox" class="parentCheckbox focus:ring-0 rounded-sm dark:bg-darkmode-700 dark:border-gray-500"
                                                 @change="checkAll($event)" />
                                         </th>
+                                        
                                         <th v-for="(th, index) in filteredHeader" :key="th" 
                                             v-show="th.title != 'APPROVERS' && !th.hide"
                                             
-                                            :class="[th.freeze ? 'dark:bg-darkmode-600 bg-bluer ':''  ,'py-2.5  text-xs dark:text-darkmode-555  font-normal ',isAttendanceReport ? '' : 'whitespace-nowrap uppercase', th.title == 'ACTIONS' || th.title == 'ID' ? 'w-32' : (th.columnWidth ?? 'w-44 min-w-44')]"
+                                            :class="[th.freeze ? 'dark:bg-darkmode-600 bg-bluer ':''   ,'py-2.5  text-xs dark:text-darkmode-555  font-normal ',th.bgColor ,isAttendanceReport ? '' : 'whitespace-nowrap uppercase', th.title == 'ACTIONS' || th.title == 'ID' ? 'w-32' : (th.columnWidth ?? 'w-44 min-w-44')]"
                                             :style="th.freeze ? { left: getLeftPosition(index) + 'px', position: 'sticky', zIndex: 10,  } : {}" :ref="'header-' + index">
                                             <div 
-                                                :class="['flex px-2 gap-2', 'justify-'+th.textAlign , { 'justify-center': th.title == 'ACTIONS' }, { 'ml-5': index == 0 }]">
+                                                :class="['flex px-2 gap-2 ', 'justify-between' , { 'justify-center': th.title == 'ACTIONS' }, { 'ml-5': index == 0 }]">
                                                 <span class="font-normal">{{ th.title }}</span>
                                                 <span v-show="th.sortable" @mouseenter="setSort(th.title)">
                                                     <BarsArrowDownIcon class="w-4 h-4" @click="sort(th.query)"
@@ -380,7 +382,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        
 
     },
     data() {
