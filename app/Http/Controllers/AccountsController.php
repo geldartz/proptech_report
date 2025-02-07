@@ -40,8 +40,9 @@ class AccountsController extends BaseController
             ->leftJoin('report_main.users as u', 'uli.user_id', '=', 'u.id')
             ->leftJoin('report_billing.invoices as inv', 'icp.invoice_id', '=', 'inv.id')
             ->whereBetween('p.or_receipt_date', [$start_date, $to_date])
-            ->whereBetween('inv.bill_date', [$start_date, $to_date])
+            // ->whereBetween('inv.bill_date', [$start_date, $to_date])
             ->where('p.status', 'VERIFIED')
+            ->where('icp.account_number', '0079-32H3RFJNBV')
             ->groupBy(
                 // 'lot_inventories.id',
                 // 'lot_inventories.project_site_id',
@@ -51,7 +52,7 @@ class AccountsController extends BaseController
                 // 'lot_inventories.floor_area',
                 // 'lot_inventories.first_bill_period',
                 // 'lot_inventories.turned_over_date',
-                'p.or_receipt_date',
+                 'p.or_receipt_date',
                 // 'u.first_name',
                 // 'u.last_name'
             )
@@ -65,17 +66,49 @@ class AccountsController extends BaseController
                 'lot_inventories.first_bill_period',
                 'lot_inventories.turned_over_date',
                 DB::raw("CONCAT(COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, 'Unknown')) as customer_name"),
-                'p.or_receipt_date as receipt_date',
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Membership Fee', 'Debit Memo (Membership Fee)') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_membership_fee"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on Assoc Dues', 'Association Dues', 'Penalty on Association Dues', 'Assoc. Dues - Water Tie-up', 'Association Dues (Water Tie-up)', 'Association Dues - (Water Tie-up)', 'Beginning Balance', 'Debit Memo (Association Dues)', 'Association Dues (Dev)', 'Debit Memo', 'Maintenance Dues') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_assoc_dues"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on Insurance', 'Penalty on Insurance', 'Special Assessments - Insurance') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_insurance"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on PMS', 'Penalty on PMS', 'Special Assessment - Preventive Maintenance') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_maintenance"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Penalty on RPT', 'Interest on RPT', 'Special Assessments - Real Property Tax') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_tax"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Water','Other Income - Water Charges', 'Electricity') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_utility"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Special Assessments - STP System Upgrade', 'Electricity') OR icp.type LIKE 'Other Income%' THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_others"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Penalty on Building Improvement', 'Special Assessments - Bldg Improvement') THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_bldg"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type = 'Violations' THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_violations"),
-                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date BETWEEN '2025-01-01' AND '2025-01-31' THEN inv.amount_paid ELSE 0 END), 0), 2) AS arrears"),
+                'p.or_receipt_date as or_receipt_date',
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Membership Fee', 'Debit Memo (Membership Fee)') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_membership_fee"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on Assoc Dues', 'Association Dues', 'Penalty on Association Dues', 'Assoc. Dues - Water Tie-up', 'Association Dues (Water Tie-up)', 'Association Dues - (Water Tie-up)', 'Beginning Balance', 'Debit Memo (Association Dues)', 'Association Dues (Dev)', 'Debit Memo', 'Maintenance Dues') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_assoc_dues"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on Insurance', 'Penalty on Insurance', 'Special Assessments - Insurance') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_insurance"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Interest on PMS', 'Penalty on PMS', 'Special Assessment - Preventive Maintenance') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_maintenance"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Penalty on RPT', 'Interest on RPT', 'Special Assessments - Real Property Tax') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_tax"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Water','Other Income - Water Charges', 'Electricity') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_utility"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Special Assessments - STP System Upgrade', 'Electricity') OR icp.type LIKE 'Other Income%' AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_others"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type IN ('Penalty on Building Improvement', 'Special Assessments - Bldg Improvement') AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_bldg"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN icp.type = 'Violations' AND icp.created_at BETWEEN ? AND ? THEN icp.allocated_amount ELSE 0 END), 0), 2) AS pftm_violations"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date < ? AND inv.id IN (SELECT invoice_id FROM report_billing.invoice_credit_payments where model_id = p.id) THEN inv.amount_paid ELSE 0 END), 0), 2) AS arrears_hoa"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date BETWEEN ? AND ? THEN inv.amount_paid ELSE 0 END), 0), 2) AS current_hoa"),
+                DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date > ? AND inv.id IN (SELECT invoice_id FROM report_billing.invoice_credit_payments where model_id = p.id) THEN inv.amount_paid ELSE 0 END), 0), 2) AS advance_hoa"),
+                // DB::raw("FORMAT(COALESCE(SUM(CASE WHEN inv.bill_date > ? THEN inv.amount_paid ELSE 0 END), 0), 2) AS advance_hoa")
+            ])
+            ->setBindings([
+                // Bindings for pftm_membership_fee
+                $start_date, $to_date,
+                // Bindings for pftm_assoc_dues
+                $start_date, $to_date,
+                // Bindings for pftm_insurance
+                $start_date, $to_date,
+                // Bindings for pftm_maintenance
+                $start_date, $to_date,
+                // Bindings for pftm_tax
+                $start_date, $to_date,
+                // Bindings for pftm_utility
+                $start_date, $to_date,
+                // Bindings for pftm_others
+                $start_date, $to_date,
+                // Bindings for pftm_bldg
+                $start_date, $to_date,
+                // Bindings for pftm_violations
+                $start_date, $to_date,
+                // Bindings for arrears_hoa
+                $start_date,
+                // Bindings for current_hoa
+                $start_date, $to_date,
+                // Bindings for advance_hoa
+                $to_date,
+
+                $start_date, $to_date,
+                'VERIFIED', '0079-MAT64C2DP3',
             ]);
     
         $model->when($date_column, function ($query) use ($date_column, $start_date, $to_date) {

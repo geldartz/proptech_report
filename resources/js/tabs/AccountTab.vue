@@ -28,6 +28,7 @@ const tableHeaders = reactive([
    { title: 'LOT AREA', onSet: true, sortable: true, query: 'lot_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
    { title: 'FLOOR AREA', onSet: true, sortable: true, query: 'floor_area', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
    { title: 'FIRST BILL PERIOD', onSet: true, sortable: true, query: 'first_bill_period', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
+   { title: 'RECEIPT DATE', onSet: true, sortable: true, query: 'or_receipt_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
    { title: 'ACCOUNT NUMBER', onSet: true, sortable: true, query: 'account_number', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
    { title: 'TURN-OVER DATE', onSet: true, sortable: true, query: 'turned_over_date', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'between' },
    { title: 'MEMBERSHIP FEE(PFTM)', onSet: true, sortable: true, query: 'pftm_membership_fee', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
@@ -39,7 +40,9 @@ const tableHeaders = reactive([
    { title: 'OTHER INCOME(PFTM)', onSet: true, sortable: true, query: 'pftm_others', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
    { title: 'BLDG IMPROVEMENT(PFTM)', onSet: true, sortable: true, query: 'pftm_bldg', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
    { title: 'VIOLATIONS(PFTM)', onSet: true, sortable: true, query: 'pftm_violations', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-green-700' },
-   { title: 'ARREARS(HOA)', onSet: true, sortable: true, query: 'arrears', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-cyan-700' },
+   { title: 'ARREARS(HOA)', onSet: true, sortable: true, query: 'arrears_hoa', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-cyan-700' },
+   { title: 'CURRENT(HOA)', onSet: true, sortable: true, query: 'current_hoa', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-cyan-700' },
+   { title: 'ADVANCE(HOA)', onSet: true, sortable: true, query: 'advance_hoa', date_filtered: false, searchable: true, checked: true, hasInlineEdit: false, textAlign: 'right', columnWidth: 'w-60', bgColor: 'bg-cyan-700' },
 ]);
 
 const searchTerm = ref('')
